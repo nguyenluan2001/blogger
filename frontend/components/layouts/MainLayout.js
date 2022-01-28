@@ -1,13 +1,18 @@
 import { Box, Container } from "@mui/material"
 import Header from "../header"
 
-const MainLayout = ({children}) => {
+const MainLayout = ({ children, hasBanner }) => {
     return (
         <Box>
             <Header></Header>
-            <Container maxWidth="lg">
-                {children}
-            </Container>
+            {
+                hasBanner
+                    ? children
+                    : <Container maxWidth="lg">
+                        {children}
+                    </Container>
+            }
+
         </Box>
     )
 }

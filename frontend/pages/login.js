@@ -24,7 +24,7 @@ const Login = () => {
         if(user, jwt) {
             Cookie.remove("token");
             Cookie.set("token", jwt);
-            router.push("/")
+            router.push("/news")
         }
     }
     console.log("process.env.STRAPI_URL", process.env.NEXT_PUBLIC_STRAPI_URL)

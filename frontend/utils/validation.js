@@ -13,4 +13,13 @@ const loginSchema = yup.object().shape({
     password: yup.string().required("Password is required")
 
 })
-export {registerSchema, loginSchema};
+const filterSchema = yup.object().shape({
+    duration: yup.object().shape({
+        startDate: yup.date(),
+        endDate: yup.date().min(yup.ref("startDate"), "Start date can't be bigger than end date")
+    }),
+    tags: yup.mixed(),
+    keyword: yup.string()
+
+})
+export {registerSchema, loginSchema, filterSchema};

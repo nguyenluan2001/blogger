@@ -1,10 +1,12 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import AuthenticationLayout from "../components/layouts/AuthenticationLayout";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { registerSchema } from "../utils/validation";
 import * as yup from "yup";
 import { register } from "../api/authentication/register";
+import { useRouter } from "next/router";
+import { useSnackBarHook } from "hooks/useSnackBarHook";
 
 const Register = () => {
     const { control, handleSubmit, formState: { errors } } = useForm({
@@ -17,10 +19,17 @@ const Register = () => {
         },
         resolver: yupResolver(registerSchema)
     });
+    const router = useRouter();
+    const {openSnackError} = useSnackBarHook();
     const onSubmit = async (values) => {
+       try {
         console.log(values);
         console.log("errors", errors)
         register(values)
+        router.push("/login");
+       } catch (error) {
+            openSnackError({title: error?.message})
+       }
     }
     console.log("process.env.STRAPI_URL", process.env.NEXT_PUBLIC_STRAPI_URL)
     return (

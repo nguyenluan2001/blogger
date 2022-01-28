@@ -1,6 +1,6 @@
 const { default: axiosClient } = require("../../utils/axios")
-
+import { strapi } from "utils/strapi";
 const register = async (data) => {
-    await axiosClient.post("api/users", data);
+    await strapi.register(data);
 }
 export {register};

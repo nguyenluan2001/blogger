@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "name": "Post",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "user": {
+      "via": "posts",
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "tags": {
+      "via": "posts",
+      "collection": "tags"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "DRAFT",
+        "PUBLIC",
+        "ANYONE"
+      ]
+    },
+    "votes": {
+      "type": "integer",
+      "default": 0
+    },
+    "voters": {
+      "via": "post",
+      "collection": "voter"
+    },
+    "views": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -1,0 +1,10 @@
+const POST_STATUS_ENUM = {
+    DRAFT: "DRAFT",
+    PUBLIC: "PUBLIC",
+    ANYONE: "ANYONE"
+}
+const VOTE_TYPE_ENUM = {
+    UP: 'UP',
+    DOWN: 'DOWN'
+}
+export {POST_STATUS_ENUM, VOTE_TYPE_ENUM}

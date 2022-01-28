@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "voters",
+  "info": {
+    "name": "Voter",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "post": {
+      "via": "voters",
+      "model": "post"
+    },
+    "user": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "voter"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "UP",
+        "DOWN"
+      ]
+    }
+  }
+}

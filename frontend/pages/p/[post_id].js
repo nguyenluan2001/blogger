@@ -7,8 +7,9 @@ import commentMultiple from '@iconify/icons-mdi/comment-multiple';
 import bookmarkIcon from '@iconify/icons-mdi/bookmark';
 import arrowDownDropCircle from '@iconify/icons-mdi/arrow-down-drop-circle';
 import arrowUpDropCircle from '@iconify/icons-mdi/arrow-up-drop-circle';
+import closeCircleOutline from '@iconify/icons-mdi/close-circle-outline';
 
-import { Stack, Box, Typography, Tooltip, Container, IconButton, Button, Chip } from "@mui/material";
+import { Stack, Box, Typography, Tooltip, Container, IconButton, Button, Chip, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import MainLayout from "components/layouts/MainLayout";
 import { usePostBySlug } from "hooks/usePostBySlug";
 import { useRouter } from "next/router";
@@ -30,6 +31,8 @@ import { VOTE_TYPE_ENUM } from "utils/constances";
 import { editPost } from "api/post/edit_post";
 import { deleteVoter } from "api/voter/delete_voter";
 import { current } from "@reduxjs/toolkit";
+import { createBookmark } from "api/bookmark/create_bookmark";
+import { deleteBookmard, deleteBookmark } from "api/bookmark/delete_bookmark";
 const PostDetail = () => {
     const router = useRouter();
     const { post_id: post_slug } = router.query;
@@ -102,6 +105,10 @@ const Banner = () => {
     )
 }
 const PostHeader = ({ post }) => {
+    const [openDialog, setOpenDialog] = useState(false);
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
     return (
         <>
             <Stack direction="row" spacing={2} alignItems="center" sx={{ height: "60px" }}>
@@ -157,11 +164,77 @@ const PostHeader = ({ post }) => {
                         </Stack>
                     </Tooltip>
                     <Tooltip title="Bookmarks">
-                        <Stack direction="row" alignItems="center" spacing={1}>
+                        <Stack
+                            direction="row"
+                            alignItems="center"
+                            spacing={1}
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => setOpenDialog(true)}
+                        >
                             <Icon icon={bookmarkIcon} style={{ fontSize: "25px" }}></Icon>
-                            <Typography>0</Typography>
+                            <Typography>{post?.bookmarks?.length}</Typography>
                         </Stack>
                     </Tooltip>
+                    <Dialog
+                        open={openDialog}
+                        onClose={handleCloseDialog}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        maxWidth="sm"
+                        fullWidth={true}
+                    >
+                        <DialogTitle id="alert-dialog-title" sx={{width: '100%'}}>
+                            {post?.bookmarks?.length > 0
+                                ? `${post?.bookmarks?.length} people bookmarked`
+                                : 'No bookmark'
+                            }
+                            <IconButton
+                                sx={{
+                                    position: 'absolute',
+                                    top: 5,
+                                    right: 5
+                                }}
+                                onClick={handleCloseDialog}
+                            >
+                                <Icon icon={closeCircleOutline} style={{fontSize: '25px'}}></Icon>
+                            </IconButton>
+                        </DialogTitle>
+                        <DialogContent>
+                            {
+                                post?.bookmarks?.map((item) => {
+                                    return (
+                                        <Stack direction="row" spacing={2} alignItems="center">
+                                            <Box
+                                                sx={{
+                                                    width: 30,
+                                                    height: 30,
+                                                    borderRadius: "50%",
+                                                    overflow: "hidden"
+                                                }}
+                                            >
+                                                <img src="/static/avatar/avatar_1.jpg" style={{ width: "100%" }}></img>
+                                            </Box>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontWeight: 'bold',
+                                                    '&:hover': {
+                                                        color: 'blue'
+                                                    }
+                                                }}
+                                            >
+                                                <Link href={`/u/${item?.user?.username}`}>{item?.user?.fullname}</Link>
+                                            </Typography>
+                                            <Typography>
+                                                @<Link href={`/u/${item?.user?.username}`}>{item?.user?.username}</Link>
+                                            </Typography>
+                                        </Stack>
+                                    )
+                                })
+                            }
+                        </DialogContent>
+
+                    </Dialog>
                 </Stack>
 
             </Stack>
@@ -201,13 +274,18 @@ const InteractSection = ({ post, refetch }) => {
     const { data: currUser, isLoading } = userCurrentUser();
     const { openSnackError } = useSnackBarHook();
     const [voter, setVoter] = useState(null);
+    const [bookmarked, setBookmarked] = useState(null);
     console.table("post", post);
     console.table("user", currUser);
     console.log("voter", voter);
+    console.log("bookmarked", bookmarked)
     useEffect(() => {
         if (post) {
-            let fetchedVoter = post?.voters?.find((item) => item.user === currUser?.id)
+            let fetchedVoter = post?.voters?.find((item) => item.user.id == currUser?.id)
+            console.log("fetchedVoter", fetchedVoter)
             setVoter(fetchedVoter)
+            let fetchedBookmarked = post?.bookmarks?.find((item) => item.user.id == currUser?.id)
+            setBookmarked(fetchedBookmarked);
         }
     }, [post])
     const handleVote = async (type) => {
@@ -275,6 +353,18 @@ const InteractSection = ({ post, refetch }) => {
         }
         refetch();
     }
+    const handleBookmark = async () => {
+        if (bookmarked) {
+            console.log(111)
+            await deleteBookmark({ bookmark_id: bookmarked?.id })
+        } else {
+            await createBookmark({
+                post: post?.id,
+                user: currUser?.id
+            })
+        }
+        refetch()
+    }
     return (
         <Stack sx={{ mt: '60px' }} direction="column" alignItems="center">
             <Box
@@ -302,7 +392,7 @@ const InteractSection = ({ post, refetch }) => {
                                 <Icon
                                     icon={arrowUpDropCircle}
                                     style={{
-                                        color: (voter?.user === currUser?.id && voter?.type === VOTE_TYPE_ENUM.UP) ? 'blue' : ''
+                                        color: (parseInt(voter?.user?.id) === parseInt(currUser?.id) && voter?.type === VOTE_TYPE_ENUM.UP) ? 'blue' : ''
                                     }}
                                 ></Icon>
                             </IconButton>
@@ -335,7 +425,7 @@ const InteractSection = ({ post, refetch }) => {
                                     <Icon
                                         icon={arrowDownDropCircle}
                                         style={{
-                                            color: (voter?.user === currUser?.id && voter?.type === VOTE_TYPE_ENUM.DOWN) ? 'blue' : ''
+                                            color: (parseInt(voter?.user?.id) === parseInt(currUser?.id) && voter?.type === VOTE_TYPE_ENUM.DOWN) ? 'blue' : ''
                                         }}
                                     ></Icon>
                                 </IconButton>
@@ -344,9 +434,14 @@ const InteractSection = ({ post, refetch }) => {
                 }
             </Stack>
             <Tooltip title="Bookmark this post" placement="right" arrow>
-                <IconButton>
-                    <Icon icon={bookmarkIcon}></Icon>
-                </IconButton>
+                {(bookmarked) ?
+                    (<IconButton onClick={() => handleBookmark()}>
+                        <Icon icon={bookmarkIcon} style={{ color: 'blue' }}></Icon>
+                    </IconButton>)
+                    : (<IconButton onClick={() => handleBookmark()}>
+                        <Icon icon={bookmarkIcon}></Icon>
+                    </IconButton>)
+                }
             </Tooltip>
             <Box>
                 <SettingPostButton>

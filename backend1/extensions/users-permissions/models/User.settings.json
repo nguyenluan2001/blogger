@@ -69,6 +69,10 @@
     "voter": {
       "via": "user",
       "model": "voter"
+    },
+    "bookmark": {
+      "via": "user",
+      "model": "bookmarks"
     }
   }
 }

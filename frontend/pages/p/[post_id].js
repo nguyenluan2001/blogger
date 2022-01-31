@@ -110,12 +110,12 @@ const PostHeader = ({ post, user, refetch, refetchUser }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);
     useEffect(() => {
-       if(user && post) {
-        let fetchUser = user?.followings?.find((item) => parseInt(item.id) === parseInt(post?.user?.id));
-        console.log("fetchUser", fetchUser);
-        if(fetchUser) setIsFollowed(true);
-        else setIsFollowed(false);
-       }
+        if (user && post) {
+            let fetchUser = user?.followings?.find((item) => parseInt(item.id) === parseInt(post?.user?.id));
+            console.log("fetchUser", fetchUser);
+            if (fetchUser) setIsFollowed(true);
+            else setIsFollowed(false);
+        }
     }, [user, post])
     console.log("isFollowed", isFollowed)
     const handleCloseDialog = () => {
@@ -123,7 +123,7 @@ const PostHeader = ({ post, user, refetch, refetchUser }) => {
     };
     const handleFollow = async () => {
         let listFollowings = user?.followings?.map((item) => item?.id)
-        if(isFollowed) {
+        if (isFollowed) {
             let newListFollowings = listFollowings.filter((item) => item != post?.user?.id);
             await editUser({
                 user_id: user?.id,
@@ -135,9 +135,9 @@ const PostHeader = ({ post, user, refetch, refetchUser }) => {
             listFollowings.push(post?.user?.id)
             await editUser({
                 user_id: user?.id,
-               data: {
-                followings: listFollowings
-               }
+                data: {
+                    followings: listFollowings
+                }
             })
         }
         refetch();
@@ -158,15 +158,25 @@ const PostHeader = ({ post, user, refetch, refetchUser }) => {
                 </Box>
                 <Box sx={{ flex: 2 }}>
                     <Stack direction="row" spacing={2} alignItems="center">
-                        <Typography variant="subtitle2" color="primary">
-                            <Link href="/abc">luannguyen</Link>
-                        </Typography>
-                        <Typography variant="subtitle2">@{post?.user?.username}</Typography>
+                        {post && (<Typography
+                            variant="subtitle2"
+                            color="primary"
+                            sx={{
+                                fontWeight: 'bold',
+                                '&:hover':{
+                                    textDecoration: 'underline',
+                                }
+                            }}
+                            >
+                            <Link href={`/u/${post?.user?.username}`}>{post?.user?.fullname}</Link>
+                        </Typography>)}
+                        {post &&
+                            (<Typography variant="subtitle2">@{post?.user?.username}</Typography>)}
                         {parseInt(post?.user?.id) !== parseInt(user?.id)
                             && (
                                 isFollowed
-                                ?<Button variant="contained" color="primary" size="small" onClick={()=>handleFollow()}>Unfollow</Button>
-                                :<Button variant="outlined" color="primary" size="small" onClick={()=>handleFollow()}>Follow</Button>
+                                    ? <Button variant="contained" color="primary" size="small" onClick={() => handleFollow()}>Unfollow</Button>
+                                    : <Button variant="outlined" color="primary" size="small" onClick={() => handleFollow()}>Follow</Button>
                             )
                         }
                     </Stack>

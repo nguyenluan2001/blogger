@@ -36,7 +36,7 @@ const PostItem = ({ post }) => {
         }
     };
     return (
-        <Stack py={3} direction="row" spacing={2}>
+        <Stack py={3} direction="row" spacing={2} sx={{borderBottom: '1px solid rgba(0,0,0,0.3)'}}>
             <Box>
                 <Avatar src="/static/avatar/avatar_1.jpg"></Avatar>
             </Box>

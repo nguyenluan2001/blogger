@@ -66,7 +66,7 @@ const PostItem = ({ post }) => {
                     <Tooltip title="Bookmarks: 20" placement="bottom" arrow>
                         <Stack direction="row" alignItems="center" sx={{width:"fit-content"}}>
                             <Icon icon={bookmarkIcon}></Icon>
-                            <Typography variant="subtitl1">10</Typography>
+                            <Typography variant="subtitl1">{post?.bookmarks?.length}</Typography>
                         </Stack>
                     </Tooltip>
                     <Tooltip title="Comments: 20" placement="bottom" arrow>

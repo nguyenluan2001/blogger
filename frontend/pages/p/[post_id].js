@@ -33,6 +33,7 @@ import { deleteVoter } from "api/voter/delete_voter";
 import { current } from "@reduxjs/toolkit";
 import { createBookmark } from "api/bookmark/create_bookmark";
 import { deleteBookmard, deleteBookmark } from "api/bookmark/delete_bookmark";
+import { editUser } from "api/user/edit_user";
 const PostDetail = () => {
     const router = useRouter();
     const { post_id: post_slug } = router.query;
@@ -47,7 +48,8 @@ const PostDetail = () => {
             user: post?.user?.id
         }
     })
-    console.log("postsOfUser", postsOfUser);
+    const { data: currUser, isLoadingUser, refetch: refetchUser } = userCurrentUser();
+    console.log("currUser", currUser);
     const settings = {
         dots: true,
         infinite: true,
@@ -61,9 +63,9 @@ const PostDetail = () => {
             <Container maxWidth="lg">
                 <Stack direction="row" mb={5}>
                     <Stack sx={{ flex: 2, mt: 10 }} direction="row" spacing={3}>
-                        <InteractSection post={post} refetch={refetch}></InteractSection>
+                        <InteractSection post={post} refetch={refetch} currUser={currUser}></InteractSection>
                         <Box sx={{ flex: 1 }}>
-                            <PostHeader post={post}></PostHeader>
+                            <PostHeader post={post} user={currUser} refetch={refetch} refetchUser={refetchUser}></PostHeader>
                             <PostContent post={post}></PostContent>
                         </Box>
                     </Stack>
@@ -104,11 +106,43 @@ const Banner = () => {
         </>
     )
 }
-const PostHeader = ({ post }) => {
+const PostHeader = ({ post, user, refetch, refetchUser }) => {
     const [openDialog, setOpenDialog] = useState(false);
+    const [isFollowed, setIsFollowed] = useState(false);
+    useEffect(() => {
+       if(user && post) {
+        let fetchUser = user?.followings?.find((item) => parseInt(item.id) === parseInt(post?.user?.id));
+        console.log("fetchUser", fetchUser);
+        if(fetchUser) setIsFollowed(true);
+        else setIsFollowed(false);
+       }
+    }, [user, post])
+    console.log("isFollowed", isFollowed)
     const handleCloseDialog = () => {
         setOpenDialog(false);
     };
+    const handleFollow = async () => {
+        let listFollowings = user?.followings?.map((item) => item?.id)
+        if(isFollowed) {
+            let newListFollowings = listFollowings.filter((item) => item != post?.user?.id);
+            await editUser({
+                user_id: user?.id,
+                data: {
+                    followings: newListFollowings
+                }
+            })
+        } else {
+            listFollowings.push(post?.user?.id)
+            await editUser({
+                user_id: user?.id,
+               data: {
+                followings: listFollowings
+               }
+            })
+        }
+        refetch();
+        refetchUser();
+    }
     return (
         <>
             <Stack direction="row" spacing={2} alignItems="center" sx={{ height: "60px" }}>
@@ -123,12 +157,19 @@ const PostHeader = ({ post }) => {
                     <img src="/static/avatar/avatar_1.jpg" style={{ width: "100%" }}></img>
                 </Box>
                 <Box sx={{ flex: 2 }}>
-                    <Box>
+                    <Stack direction="row" spacing={2} alignItems="center">
                         <Typography variant="subtitle2" color="primary">
                             <Link href="/abc">luannguyen</Link>
                         </Typography>
                         <Typography variant="subtitle2">@{post?.user?.username}</Typography>
-                    </Box>
+                        {parseInt(post?.user?.id) !== parseInt(user?.id)
+                            && (
+                                isFollowed
+                                ?<Button variant="contained" color="primary" size="small" onClick={()=>handleFollow()}>Unfollow</Button>
+                                :<Button variant="outlined" color="primary" size="small" onClick={()=>handleFollow()}>Follow</Button>
+                            )
+                        }
+                    </Stack>
                     <Stack direction="row" spacing={1}>
                         <Tooltip title="Reputations" placement="bottom" arrow>
                             <Stack direction="row" alignItems="center" sx={{ width: "fit-content" }}>
@@ -139,7 +180,7 @@ const PostHeader = ({ post }) => {
                         <Tooltip title="Followers" placement="bottom" arrow>
                             <Stack direction="row" alignItems="center" sx={{ width: "fit-content" }}>
                                 <Icon icon={accountPlus}></Icon>
-                                <Typography>10</Typography>
+                                <Typography>{post?.user?.followers?.length}</Typography>
                             </Stack>
                         </Tooltip>
                         <Tooltip title="Posts" placement="bottom" arrow>
@@ -183,7 +224,7 @@ const PostHeader = ({ post }) => {
                         maxWidth="sm"
                         fullWidth={true}
                     >
-                        <DialogTitle id="alert-dialog-title" sx={{width: '100%'}}>
+                        <DialogTitle id="alert-dialog-title" sx={{ width: '100%' }}>
                             {post?.bookmarks?.length > 0
                                 ? `${post?.bookmarks?.length} people bookmarked`
                                 : 'No bookmark'
@@ -196,7 +237,7 @@ const PostHeader = ({ post }) => {
                                 }}
                                 onClick={handleCloseDialog}
                             >
-                                <Icon icon={closeCircleOutline} style={{fontSize: '25px'}}></Icon>
+                                <Icon icon={closeCircleOutline} style={{ fontSize: '25px' }}></Icon>
                             </IconButton>
                         </DialogTitle>
                         <DialogContent>
@@ -270,8 +311,8 @@ const SettingPostButton = styled(Button)(({ theme }) => ({
     heigth: '25px',
     minWidth: 0
 }))
-const InteractSection = ({ post, refetch }) => {
-    const { data: currUser, isLoading } = userCurrentUser();
+const InteractSection = ({ post, refetch, currUser }) => {
+    // const { data: currUser, isLoading } = userCurrentUser();
     const { openSnackError } = useSnackBarHook();
     const [voter, setVoter] = useState(null);
     const [bookmarked, setBookmarked] = useState(null);

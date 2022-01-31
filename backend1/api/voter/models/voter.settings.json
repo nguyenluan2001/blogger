@@ -17,9 +17,9 @@
       "model": "post"
     },
     "user": {
+      "via": "voter",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "voter"
+      "model": "user"
     },
     "type": {
       "type": "enumeration",

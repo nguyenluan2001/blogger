@@ -73,6 +73,17 @@
     "bookmark": {
       "via": "user",
       "model": "bookmarks"
+    },
+    "followers": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "followings",
+      "dominant": true
+    },
+    "followings": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "followers"
     }
   }
 }

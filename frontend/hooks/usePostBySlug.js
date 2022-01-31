@@ -27,6 +27,9 @@ const usePostBySlug = ({post_slug}) => {
                     id
                     username
                     fullname
+                    followers{
+                        id
+                    }
                 }
                 tags{
                     id

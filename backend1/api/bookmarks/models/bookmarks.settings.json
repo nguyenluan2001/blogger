@@ -16,9 +16,9 @@
       "via": "bookmarks"
     },
     "user": {
+      "via": "bookmark",
       "plugin": "users-permissions",
-      "model": "user",
-      "via": "bookmark"
+      "model": "user"
     }
   }
 }

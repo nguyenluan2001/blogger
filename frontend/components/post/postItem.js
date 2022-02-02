@@ -42,9 +42,9 @@ const PostItem = ({ post }) => {
             </Box>
             <Box>
                 <Stack direction="row" spacing={2} alignItems="center">
-                    <Link href="#">
-                        <a variant="subtitle1" style={{ color: "blue" }}>{post?.user?.username}</a>
-                    </Link>
+                    <Typography variant="subtitle1" style={{ color: "blue" }}>
+                        <Link href={`/u/${post?.user?.username}`}>{post?.user?.username}</Link>
+                    </Typography>
                     <Typography variant="subtitle1">About {moment(Date.now() - createdAt).utc().format("H:m:s")} minutes ago</Typography>
                     <Stack direction="row" spacing={1}>
                         {post?.tags?.map((tag) => {
@@ -57,20 +57,20 @@ const PostItem = ({ post }) => {
                     {/* <Link href={`/p/${post?.slug}`}>{post?.title}</Link> */}
                 </Typography>
                 <Stack direction="row" spacing={2}>
-                    <Tooltip title="Views: 20" placement="bottom" arrow>
-                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}}>
+                    <Tooltip title={`Views: ${post?.views}`} placement="bottom" arrow>
+                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}} spacing={1}>
                             <Icon icon={eyeIcon}></Icon>
-                            <Typography variant="subtitl1">10</Typography>
+                            <Typography variant="subtitle1">{post?.views}</Typography>
                         </Stack>
                     </Tooltip>
-                    <Tooltip title="Bookmarks: 20" placement="bottom" arrow>
-                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}}>
+                    <Tooltip title={`Bookmarks: ${post?.bookmarks?.length}`} placement="bottom" arrow>
+                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}} spacing={1}>
                             <Icon icon={bookmarkIcon}></Icon>
-                            <Typography variant="subtitl1">{post?.bookmarks?.length}</Typography>
+                            <Typography variant="subtitle1">{post?.bookmarks?.length}</Typography>
                         </Stack>
                     </Tooltip>
                     <Tooltip title="Comments: 20" placement="bottom" arrow>
-                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}}>
+                        <Stack direction="row" alignItems="center" sx={{width:"fit-content"}} spacing={1}> 
                             <Icon icon={commentTextMultiple}></Icon>
                             <Typography variant="subtitl1">10</Typography>
                         </Stack>

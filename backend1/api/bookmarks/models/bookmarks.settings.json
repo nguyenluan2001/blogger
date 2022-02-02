@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "bookmarks",
   "info": {
-    "name": "Bookmarks"
+    "name": "Bookmarks",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -16,7 +17,7 @@
       "via": "bookmarks"
     },
     "user": {
-      "via": "bookmark",
+      "via": "bookmarks",
       "plugin": "users-permissions",
       "model": "user"
     }

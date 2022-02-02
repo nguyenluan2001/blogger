@@ -70,10 +70,6 @@
       "via": "user",
       "model": "voter"
     },
-    "bookmark": {
-      "via": "user",
-      "model": "bookmarks"
-    },
     "followers": {
       "plugin": "users-permissions",
       "collection": "user",
@@ -87,6 +83,14 @@
     },
     "reputations": {
       "type": "integer"
+    },
+    "tags": {
+      "via": "user",
+      "collection": "tags"
+    },
+    "bookmarks": {
+      "via": "user",
+      "collection": "bookmarks"
     }
   }
 }

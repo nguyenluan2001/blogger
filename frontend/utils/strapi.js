@@ -8,7 +8,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL;
 const strapi = new Strapi({
   url: STRAPI_URL,
   store: {
-    key: 'strapi_jwt',
+    key: 'strapi_jwt_blogger',
     useLocalStorage: false,
     cookieOptions: { path: '/' },
   },

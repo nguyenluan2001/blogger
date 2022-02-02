@@ -168,7 +168,7 @@ const Header = () => {
                         </Box>
 
                     </Stack>
-                    <MenuItem>
+                    <MenuItem onClick={() => router.push(`/u/${currentUser?.username}`)}>
                         <ListItemIcon>
                             <Icon icon={accountIcon}></Icon>
                         </ListItemIcon>

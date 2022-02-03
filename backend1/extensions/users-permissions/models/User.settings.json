@@ -91,6 +91,30 @@
     "bookmarks": {
       "via": "user",
       "collection": "bookmarks"
+    },
+    "birthday": {
+      "type": "date"
+    },
+    "gender": {
+      "type": "enumeration",
+      "enum": [
+        "MALE",
+        "FEMALE",
+        "OTHER"
+      ]
+    },
+    "real_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "address": {
+      "type": "string"
+    },
+    "university": {
+      "model": "universities",
+      "via": "user"
     }
   }
 }

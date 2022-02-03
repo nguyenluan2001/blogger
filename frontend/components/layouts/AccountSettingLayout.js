@@ -1,4 +1,4 @@
-import { Container, Typography, Box, Stack, TextField, Menu, MenuItem, Divider, Button, unstable_ClassNameGenerator, IconButton, Badge } from "@mui/material";
+import { Container, Typography, Box, Stack, TextField, Menu, MenuItem, Divider, Button, unstable_ClassNameGenerator, IconButton, Badge, List, ListItemButton, Collapse } from "@mui/material";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -8,16 +8,25 @@ import bellOutline from '@iconify/icons-mdi/bell-outline';
 import squareEditOutline from '@iconify/icons-mdi/square-edit-outline';
 import pencilOutline from '@iconify/icons-mdi/pencil-outline';
 import formatListCheckbox from '@iconify/icons-mdi/format-list-checkbox';
+import homeIcon from '@iconify/icons-mdi/home';
+import cardAccountDetails from '@iconify/icons-mdi/card-account-details';
+import chevronUp from '@iconify/icons-mdi/chevron-up';
+import chevronDown from '@iconify/icons-mdi/chevron-down';
+import accountIcon from '@iconify/icons-mdi/account';
+import emailIcon from '@iconify/icons-mdi/email';
+import shieldHalfFull from '@iconify/icons-mdi/shield-half-full';
+import keyVariant from '@iconify/icons-mdi/key-variant';
+import groupIcon from '@iconify/icons-mdi/group';
+
 import Link from "next/link";
 import { Icon } from '@iconify/react';
 import magnifyIcon from '@iconify/icons-mdi/magnify';
-import accountIcon from '@iconify/icons-mdi/account';
 import { useState } from "react";
 import { userCurrentUser } from "../../hooks/useCurrentUser";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getCurrentUser } from "../../redux/slices/user";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 const Header = () => {
     const [anchorUserPopup, setAnchorUserPopup] = useState(null);
     const [openUserPopup, setOpenUserPopup] = useState(false);
@@ -63,13 +72,11 @@ const Header = () => {
                 }}
             >
                 <Box>
-                    <Typography variant="h5">
-                        <Link href="/news">BLOGGER</Link>
-                    </Typography>
+                    <Typography variant="h5">BLOGGER</Typography>
                 </Box>
                 <Stack direction="row" sx={{ flex: 2, ml: 3 }} spacing={3} >
                     <Typography>
-                        <Link href="/news">Posts</Link>
+                        <Link href="/posts">Posts</Link>
                     </Typography>
                     <Typography>
                         <Link href="/questions">Questions</Link>
@@ -176,7 +183,7 @@ const Header = () => {
                         </ListItemIcon>
                         <ListItemText>Profile</ListItemText>
                     </MenuItem>
-                    <MenuItem onClick={()=>router.push("/me/posts/draft")}>
+                    <MenuItem onClick={() => router.push("/me/posts/draft")}>
                         <ListItemIcon>
                             <Icon icon={fileDocumentOutline}></Icon>
                         </ListItemIcon>
@@ -194,4 +201,99 @@ const Header = () => {
         </Box>
     )
 }
-export default Header;
+const Sidebar = () => {
+    const [openMyInfo, setOpenMyInfo] = useState(true);
+    const [openSecurity, setOpenSecurity] = useState(true);
+    const router = useRouter();
+    return (
+        <List
+            sx={{ 
+                height: '100vh',
+                width: '100%', 
+                maxWidth: 360, 
+                bgcolor: 'background.paper', 
+                borderRight: '1px solid rgba(0,0,0,0.3)'
+             }}
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+        >
+            <ListItemButton selected = {router.asPath === '/account'} onClick={() => router.push("/account")}>
+                <ListItemIcon>
+                    <Icon icon={homeIcon} ></Icon>
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+            </ListItemButton>
+            <ListItemButton onClick={() => setOpenMyInfo(pre=>!pre)}>
+                <ListItemIcon>
+                    <Icon icon={cardAccountDetails}></Icon>
+                </ListItemIcon>
+                <ListItemText primary="My Infomation" />
+                {openMyInfo ? <Icon icon={chevronUp}></Icon>: <Icon icon={chevronDown}></Icon>}
+            </ListItemButton>
+            <Collapse in={openMyInfo} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding  onClick = {() => router.push("/account/profile/personal")}>
+                    <ListItemButton sx={{ pl: 4 }} selected = {router.asPath === '/account/profile/personal'}>
+                        <ListItemIcon>
+                            <Icon icon={accountIcon}></Icon>
+                        </ListItemIcon>
+                        <ListItemText primary="Private Infomation" />
+                    </ListItemButton>
+                </List>
+                <List component="div" disablePadding onClick = {() => router.push("/account/profile/contact")}>
+                    <ListItemButton sx={{ pl: 4 }}  selected = {router.asPath === '/account/profile/contact'}>
+                        <ListItemIcon>
+                            <Icon icon={cardAccountDetails}></Icon>
+                        </ListItemIcon>
+                        <ListItemText primary="Contact Infomation" />
+                    </ListItemButton>
+                </List>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                            <Icon icon={emailIcon}></Icon>
+                        </ListItemIcon>
+                        <ListItemText primary="Emails" />
+                    </ListItemButton>
+                </List>
+            </Collapse>
+            <ListItemButton onClick={() => setOpenSecurity(pre=>!pre)}>
+                <ListItemIcon>
+                    <Icon icon={shieldHalfFull}></Icon>
+                </ListItemIcon>
+                <ListItemText primary="Security" />
+                {openMyInfo ? <Icon icon={chevronUp}></Icon>: <Icon icon={chevronDown}></Icon>}
+            </ListItemButton>
+            <Collapse in={openSecurity} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}  selected = {router.asPath === '/account/security/password'} onClick = {() => router.push("/account/security/password")}>
+                        <ListItemIcon>
+                            <Icon icon={keyVariant} rotate={1}></Icon>
+                        </ListItemIcon>
+                        <ListItemText primary="Password" />
+                    </ListItemButton>
+                </List>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemIcon>
+                            <Icon icon={groupIcon}></Icon>
+                        </ListItemIcon>
+                        <ListItemText primary="Connected Account" />
+                    </ListItemButton>
+                </List>
+              
+            </Collapse>
+        </List>
+    )
+}
+const AccountSettingLayout = ({ children }) => {
+    return (
+        <Box>
+            <Header></Header>
+            <Stack mt={5} direction="row">
+                <Sidebar></Sidebar>
+                <Box sx={{flex: 1}}>{children}</Box>
+            </Stack>
+        </Box>
+    )
+}
+export default AccountSettingLayout;

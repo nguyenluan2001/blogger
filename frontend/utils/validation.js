@@ -22,4 +22,11 @@ const filterSchema = yup.object().shape({
     keyword: yup.string()
 
 })
-export {registerSchema, loginSchema, filterSchema};
+const changePasswordSchema = yup.object().shape({
+    current_password: yup.string().required("Current password is required"),
+    new_password: yup.string().required("New password is required"),
+    confirm_password: yup.string()
+    .oneOf([yup.ref('new_password'), null], 'Passwords must match')
+    .required("Confirm password is required"),
+})
+export {registerSchema, loginSchema, filterSchema, changePasswordSchema};

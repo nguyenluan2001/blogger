@@ -429,7 +429,7 @@ const InteractSection = ({ post, refetch, currUser }) => {
                 <img src="/static/avatar/avatar_1.jpg" style={{ width: "100%" }}></img>
             </Box>
             <Stack sx={{ width: 'fit-content' }} direction="column" alignItems="center">
-                {post?.user?.id === currUser?.id
+                {parseInt(post?.user?.id) === parseInt(currUser?.id)
                     ? (
                         <Tooltip title="You can't vote for you post" placement="right" arrow>
                             <IconButton>
@@ -457,7 +457,7 @@ const InteractSection = ({ post, refetch, currUser }) => {
                     }
                 </Typography>
                 {
-                    post?.user?.id === currUser?.id
+                    parseInt(post?.user?.id) === parseInt(currUser?.id)
                         ? (
                             <Tooltip title="You can't vote for you post" placement="right" arrow>
                                 <IconButton>

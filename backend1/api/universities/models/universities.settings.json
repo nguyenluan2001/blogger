@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "tags",
+  "collectionName": "universities",
   "info": {
-    "name": "Tags",
-    "description": ""
+    "name": "Universities"
   },
   "options": {
     "increments": true,
@@ -15,13 +14,11 @@
     "name": {
       "type": "string"
     },
-    "posts": {
-      "via": "tags",
-      "collection": "post",
-      "dominant": true
+    "code": {
+      "type": "string"
     },
     "user": {
-      "via": "tags",
+      "via": "university",
       "plugin": "users-permissions",
       "model": "user"
     }

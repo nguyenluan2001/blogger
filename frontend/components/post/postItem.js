@@ -48,7 +48,7 @@ const PostItem = ({ post }) => {
                     <Typography variant="subtitle1">About {moment(Date.now() - createdAt).utc().format("H:m:s")} minutes ago</Typography>
                     <Stack direction="row" spacing={1}>
                         {post?.tags?.map((tag) => {
-                            return  <Chip label={tag?.name} clickable href="#" component="a"  size="small" />
+                            return  <Chip label={tag?.name} clickable href={`/tags/${tag?.slug}`} component="a"  size="small" />
                         })}
                     </Stack>
                 </Stack>

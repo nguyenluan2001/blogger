@@ -84,10 +84,6 @@
     "reputations": {
       "type": "integer"
     },
-    "tags": {
-      "via": "user",
-      "collection": "tags"
-    },
     "bookmarks": {
       "via": "user",
       "collection": "bookmarks"
@@ -115,6 +111,10 @@
     "university": {
       "model": "universities",
       "via": "user"
+    },
+    "tags": {
+      "via": "users",
+      "collection": "tags"
     }
   }
 }

@@ -2,6 +2,14 @@
   "routes": [
     {
       "method": "GET",
+      "path": "/tags/popular",
+      "handler": "tags.getPopularTags",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/tags",
       "handler": "tags.find",
       "config": {

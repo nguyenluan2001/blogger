@@ -20,10 +20,14 @@
       "collection": "post",
       "dominant": true
     },
-    "user": {
-      "via": "tags",
+    "users": {
       "plugin": "users-permissions",
-      "model": "user"
+      "collection": "user",
+      "via": "tags",
+      "dominant": true
+    },
+    "slug": {
+      "type": "string"
     }
   }
 }

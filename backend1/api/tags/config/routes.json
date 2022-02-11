@@ -10,6 +10,14 @@
     },
     {
       "method": "GET",
+      "path": "/tags/filterTags",
+      "handler": "tags.filterTags",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
       "path": "/tags",
       "handler": "tags.find",
       "config": {

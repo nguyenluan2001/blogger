@@ -34,6 +34,7 @@ import { current } from "@reduxjs/toolkit";
 import { createBookmark } from "api/bookmark/create_bookmark";
 import { deleteBookmard, deleteBookmark } from "api/bookmark/delete_bookmark";
 import { editUser } from "api/user/edit_user";
+import Banner from "components/Banner";
 const PostDetail = () => {
     const router = useRouter();
     const { post_id: post_slug } = router.query;
@@ -80,32 +81,32 @@ const PostDetail = () => {
         </Box>
     )
 }
-const Banner = () => {
-    const banners = [
-        "/static/banner/banner1.jpg",
-        "/static/banner/banner2.jpg",
-    ]
-    const [usedBanner, setUsedBanner] = useState("/static/banner/banner1.jpg");
-    useEffect(() => {
-        let index = Math.floor(Math.random() * banners.length);
-        setUsedBanner(banners[index])
-    }, [])
-    return (
-        <>
-            <Box
-                sx={{
-                    height: "200px",
-                    backgroundImage: `url(${usedBanner})`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "0% 50%"
+// const Banner = () => {
+//     const banners = [
+//         "/static/banner/banner1.jpg",
+//         "/static/banner/banner2.jpg",
+//     ]
+//     const [usedBanner, setUsedBanner] = useState("/static/banner/banner1.jpg");
+//     useEffect(() => {
+//         let index = Math.floor(Math.random() * banners.length);
+//         setUsedBanner(banners[index])
+//     }, [])
+//     return (
+//         <>
+//             <Box
+//                 sx={{
+//                     height: "200px",
+//                     backgroundImage: `url(${usedBanner})`,
+//                     backgroundSize: "cover",
+//                     backgroundRepeat: "no-repeat",
+//                     backgroundPosition: "0% 50%"
 
-                }}
-            >
-            </Box>
-        </>
-    )
-}
+//                 }}
+//             >
+//             </Box>
+//         </>
+//     )
+// }
 const PostHeader = ({ post, user, refetch, refetchUser }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [isFollowed, setIsFollowed] = useState(false);

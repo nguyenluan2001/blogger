@@ -51,6 +51,19 @@ const useTagBySlug = ({ tag_slug, query }) => {
                         }
 
                     }
+                    followers{
+                        id
+                        username
+                        fullname
+                        reputations
+                        posts{
+                            id
+                        }
+                        followers{
+                            id
+                        }
+
+                    }
                 }
             }`
             })

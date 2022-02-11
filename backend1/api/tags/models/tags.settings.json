@@ -20,7 +20,7 @@
       "collection": "post",
       "dominant": true
     },
-    "users": {
+    "followers": {
       "plugin": "users-permissions",
       "collection": "user",
       "via": "tags",

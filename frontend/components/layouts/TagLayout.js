@@ -9,6 +9,7 @@ import TagItem from "components/tag/tagItem";
 import { usePopularTags } from "hooks/usePopularTags";
 import { userCurrentUser } from "hooks/useCurrentUser";
 import { editUser } from "api/user/edit_user";
+import { useTagBySlug } from "hooks/useTagBySlug";
 const tabsConfig = [
     {
         id: 0,
@@ -45,8 +46,11 @@ const useStyles = makeStyles({
         }
     }
 })
-const TagLayout = ({ children, tag }) => {
+const TagLayout = ({ children}) => {
     const router = useRouter();
+    // const router = useRouter();
+    const {tag_id: tag_slug} = router.query;
+    const {data: tag} = useTagBySlug({tag_slug})
     const [activeTabValue, setActiveTabValue] = useState(0);
     const classes = useStyles();
     const { data: tags, refetch: refetchTags } = usePopularTags();
@@ -73,8 +77,8 @@ const TagLayout = ({ children, tag }) => {
                 <Box sx={{ flex: 3 }}>
                     <Tabs value={activeTabValue} aria-label="basic tabs example">
                         {
-                            tabsConfig.map((item) => {
-                                return <Tab label={item.title} component="a" href={`/tags/${tag?.slug}/${item.uri}`}></Tab>
+                            tabsConfig.map((item,index) => {
+                                return <Tab key={index} label={item.title} component="a" href={`/tags/${tag?.slug}/${item.uri}`}></Tab>
                             })
                         }
                     </Tabs>

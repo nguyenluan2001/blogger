@@ -8,20 +8,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useQuestions } from "hooks/useQuestions";
 import QuestionList from "components/question/QuestionList";
-import QuestionLayout from "components/layouts/QuestionLayout";
 
-const Questions = () => {
-    const {data: questions, isLoading} = useQuestions({
-        query:{
-            _sort: 'created_at:desc'
-        }
-    })
+function QuestionLayout({children}) {
     return (
-        <Box>
-            {questions && (
-                <QuestionList questions={questions}></QuestionList> 
-            )}
-        </Box>
+        <MainLayout  hasBanner={true}>
+            <Banner></Banner>
+            <Navbar></Navbar>
+            <Container maxWidth="lg">{children}</Container>
+        </MainLayout>
     )
 }
 const tabConfigs = [
@@ -101,10 +95,4 @@ const Navbar = () => {
     )
 
 }
-Questions.getLayout = function getLayout(page) {
-    return (
-        // <MainLayout hasBanner={true}>{page}</MainLayout>
-        <QuestionLayout>{page}</QuestionLayout>
-    )
-}
-export default Questions;
+export default QuestionLayout

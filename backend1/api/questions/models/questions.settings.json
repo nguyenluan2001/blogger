@@ -1,8 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "tags",
+  "collectionName": "questions",
   "info": {
-    "name": "Tags",
+    "name": "Questions",
     "description": ""
   },
   "options": {
@@ -12,26 +12,28 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "title": {
       "type": "string"
     },
-    "posts": {
-      "via": "tags",
-      "collection": "post",
+    "content": {
+      "type": "richtext"
+    },
+    "owner": {
+      "plugin": "users-permissions",
+      "model": "user",
+      "via": "questions"
+    },
+    "tags": {
+      "collection": "tags",
+      "via": "questions",
       "dominant": true
     },
-    "followers": {
-      "plugin": "users-permissions",
-      "collection": "user",
-      "via": "tags",
-      "dominant": true
+    "votes": {
+      "type": "integer",
+      "default": 0
     },
     "slug": {
       "type": "string"
-    },
-    "questions": {
-      "via": "tags",
-      "collection": "questions"
     }
   }
 }

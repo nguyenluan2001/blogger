@@ -115,6 +115,10 @@
     "tags": {
       "via": "followers",
       "collection": "tags"
+    },
+    "questions": {
+      "via": "owner",
+      "collection": "questions"
     }
   }
 }

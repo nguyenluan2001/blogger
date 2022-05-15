@@ -32,6 +32,19 @@ const useQuestionBySlug = (question_slug) => {
                 tags{
                     id
                     name
+                    slug
+                }
+                replies{
+                    id
+                    content
+                    user{
+                        id
+                        username
+                    }
+                    created_at
+                }
+                bookmark_users{
+                    id
                 }
              }
             }`

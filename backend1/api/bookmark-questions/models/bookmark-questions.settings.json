@@ -1,0 +1,14 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bookmark_questions",
+  "info": {
+    "name": "Bookmark_questions"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {}
+}

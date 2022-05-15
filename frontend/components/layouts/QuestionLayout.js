@@ -9,15 +9,6 @@ import { useRouter } from "next/router";
 import { useQuestions } from "hooks/useQuestions";
 import QuestionList from "components/question/QuestionList";
 
-function QuestionLayout({children}) {
-    return (
-        <MainLayout  hasBanner={true}>
-            <Banner></Banner>
-            <Navbar></Navbar>
-            <Container maxWidth="lg">{children}</Container>
-        </MainLayout>
-    )
-}
 const tabConfigs = [
     {
         id: 1,
@@ -25,27 +16,41 @@ const tabConfigs = [
         url: ''
     },
     {
-        id: 1,
+        id: 2,
         title: 'Unsolved',
         url: 'unsolved'
     },
     {
-        id: 1,
-        title: 'Follwings',
+        id: 3,
+        title: 'Followings',
         url: 'followings'
     },
     {
-        id: 1,
+        id: 4,
         title: 'Bookmarked',
         url: 'bookmarked'
     },
 ]
+function QuestionLayout({children}) {
+    const router = useRouter();
+    console.log('router', router)
+    const activeUrl = router.asPath.split("/").pop();
+    const activeTab = tabConfigs?.find(item => item.url === activeUrl);
+    return (
+        <MainLayout  hasBanner={true}>
+            <Banner></Banner>
+            <Navbar activeTab={activeTab}></Navbar>
+            <Container maxWidth="lg">{children}</Container>
+        </MainLayout>
+    )
+}
+
 const WrapNavbar = styled(Stack)({
     background: "black",
     color: 'white',
     fontWeight: 'bold'
 })
-const TabItem = styled(Stack)({
+const TabItem = styled(Stack)(({isActive}) => ({
     '&:hover': {
         '&::after': {
             width: '100%'
@@ -56,11 +61,12 @@ const TabItem = styled(Stack)({
         display: 'flex',
         height: '3px',
         background: 'white',
-        width: '0',
+        // background: isActive ? 'white' : 'red',
+        width: isActive ? '100%' : '0',
         transition: 'width 0.3s ease-in-out'
     }
-})
-const Navbar = () => {
+}))
+const Navbar = ({activeTab}) => {
     const router = useRouter();
     return (
         <Stack 
@@ -75,7 +81,7 @@ const Navbar = () => {
             <WrapNavbar direction="row" spacing={3}>
                 {
                     tabConfigs.map((tab) => (
-                        <TabItem direction="column">
+                        <TabItem direction="column" isActive = {parseInt(tab?.id, 10) === parseInt(activeTab?.id, 10)}>
                             <Link href="#">
                                 <a>
                                     <Typography>{tab.title}</Typography>

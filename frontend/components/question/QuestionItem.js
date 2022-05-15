@@ -33,7 +33,7 @@ function QuestionItem({ question }) {
           <Tooltip title="Answers" placement='bottom'>
             <Stack direction="row" sx={{ width: 'fit-content' }} alignItems="center" spacing={1}>
               <Icon icon={replyIcon}></Icon>
-              <Typography>0</Typography>
+              <Typography>{question?.replies?.length}</Typography>
             </Stack>
           </Tooltip>
           <Tooltip title="Scores" placement='bottom'>
@@ -45,7 +45,7 @@ function QuestionItem({ question }) {
           <Tooltip title="Comments" placement='bottom'>
             <Stack direction="row" sx={{ width: 'fit-content' }} alignItems="center" spacing={1}>
               <Icon icon={commentMultiple}></Icon>
-              <Typography>0</Typography>
+              <Typography>{question?.replies?.length}</Typography>
             </Stack>
           </Tooltip>
           <Tooltip title="Views" placement='bottom'>

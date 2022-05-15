@@ -14,3 +14,7 @@ a {
 * {
   box-sizing: border-box;
 }
+.rdw-editor-main{
+  height: 200px!important;
+  border: 1px solid rgba(0,0,0,0.1);
+}

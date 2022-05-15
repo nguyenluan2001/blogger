@@ -119,6 +119,14 @@
     "questions": {
       "via": "owner",
       "collection": "questions"
+    },
+    "replies": {
+      "via": "user",
+      "collection": "question-reply"
+    },
+    "bookmark_questions": {
+      "via": "bookmark_users",
+      "collection": "questions"
     }
   }
 }

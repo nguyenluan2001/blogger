@@ -34,6 +34,16 @@
     },
     "slug": {
       "type": "string"
+    },
+    "replies": {
+      "via": "question",
+      "collection": "question-reply"
+    },
+    "bookmark_users": {
+      "plugin": "users-permissions",
+      "collection": "user",
+      "via": "bookmark_questions",
+      "dominant": true
     }
   }
 }
